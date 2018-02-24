@@ -1,10 +1,9 @@
 const { Client } = require('hprose');
 const btoa = require('btoa');
 
-module.export = {
+module.exports = {
 	New: (uri, auth) => {
-		const token = btoa(auth);
-		const stockdb = Client.create(uri, [
+		const methods = [
 			'PutOHLC',
 			'PutOHLCs',
 			'PutOrder',
@@ -16,9 +15,30 @@ module.export = {
 			'GetPeriodRange',
 			'GetOHLCs',
 			'GetDepth',
-		]);
+		];
+		const token = btoa(auth);
+		const stockdb = Client.create(uri, methods);
 		stockdb.setHeader('Authorization', `Basic ${token}`);
-		return stockdb;
+
+		const wrapper = {};
+		methods.map(method => {
+			wrapper[method] = (...args) => {
+				return new Promise((done, reject) => {
+					args.push(resp => {
+						if (resp && resp.Success === true) {
+							done(resp.Data);
+						} else {
+							reject(resp && resp.Message ? resp.Message : JSON.stringify(resp));
+						}
+					});
+					args.push((func, error) => {
+						reject(error);
+					});
+					stockdb[method](...args);
+				});
+			}
+		});
+		return wrapper;
 	},
 	Second: 1,
 	Minute: 60,

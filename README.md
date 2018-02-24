@@ -1,38 +1,39 @@
-[![npm](https://img.shields.io/npm/v/stockdb.svg?style=flat)](https://www.npmjs.com/package/stockdb)
-[![npm](https://img.shields.io/npm/l/stockdb.svg?style=flat)](https://www.npmjs.com/package/stockdb)
-[![npm](https://img.shields.io/npm/dt/stockdb.svg?style=flat)](https://www.npmjs.com/package/stockdb)
-
-JavaScript client library for StockDB
+node.js library for StockDB
 
 # Example
 
-[simple](https://github.com/stockdb/stockdb-js/blob/master/example/simple)
+```javascript
+const StockDB = require('../');
+
+const client = StockDB.New('http://localhost:18765', 'username:password');
+
+const data = {
+	Time: 1480737600,
+	Open: 109.17,
+	High: 110.09,
+	Low: 108.85,
+	Close: 109.90,
+	Volume: 26528000
+};
+const opt = {
+	Market: 'test',
+	Symbol: 'nasdq',
+	Period: StockDB.Day
+};
+
+client.PutOHLC(data, opt).then(d => {
+	console.log(d);
+}).catch(err => {
+	console.log(err);
+});
+```
 
 # Instllation
-
-## Browser globals
-
-> The **dist** folder contains `stockdb.js` with the component exported in the `window.StockDB` object.
-
-```html
-<script src="path/to/hprose-html5.js"></script>
-<script src="path/to/stockdb.js"></script>
-<script>
-    var client = StockDB.New("http://localhost:8765", "username:password");
-</script>
-```
 
 ## NPM
 
 ```shell
-$ npm install --save stockdb
-```
-
-### CommonJS
-
-```js
-var StockDB = require('stockdb');
-var client = StockDB.New("http://localhost:8765", "username:password");
+$ npm install --save stockdb-node
 ```
 
 ### ES6
