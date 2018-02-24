@@ -1,18 +1,8 @@
 {
-  "name": "stockdb",
+  "name": "stockdb-node",
   "version": "0.2.2",
   "description": "JavaScript client library for StockDB",
-  "main": "dist/stockdb.common.js",
-  "files": [
-    "dist/stockdb.common.js",
-    "dist/stockdb.js",
-    "src"
-  ],
-  "scripts": {
-    "start": "webpack --config webpack.common.js",
-    "build": "webpack --config webpack.config.js",
-    "test": "echo true"
-  },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stockdb/stockdb-js.git"
@@ -36,6 +26,7 @@
     "webpack": "^1.13.0"
   },
   "dependencies": {
-    "hprose-html5": "^2.0.31"
+    "btoa": "^1.1.2",
+    "hprose": "^2.0.46"
   }
 }
